@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ryazanov
+      POSTGRES_PASSWORD: passid
+      POSTGRES_DB: passidserver
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  passidserver:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_URL=postgresql://ryazanov:passid@db:5432/passidserver
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
